@@ -1,0 +1,51 @@
+package com.zq.retrofitdemo;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import com.zq.retrofitdemo.bean.GetDeductReq;
+import com.zq.retrofitdemo.bean.GetDeductRsp;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private ApiService apiService;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://developapprest.duolunxc.com/mobileRest/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+
+    }
+
+    public void onClickH(View view) {
+        Call<GetDeductRsp> call = apiService.getDeduct(new GetDeductReq("3020", "blykri2g", "1370899"));
+        call.enqueue(new Callback<GetDeductRsp>() {
+            @Override
+            public void onResponse(Call<GetDeductRsp> call, Response<GetDeductRsp> response) {
+                Log.e(TAG, "onResponse: " + response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<GetDeductRsp> call, Throwable t) {
+
+            }
+        });
+    }
+}
