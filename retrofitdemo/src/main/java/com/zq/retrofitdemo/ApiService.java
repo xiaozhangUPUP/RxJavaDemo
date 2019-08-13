@@ -5,6 +5,7 @@ import com.zq.retrofitdemo.bean.GetDeductRsp;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,6 +27,9 @@ public interface ApiService {
     // post方式
     @POST("robot/getDeduct.do")
     Call<GetDeductRsp> getDeduct(@Body GetDeductReq req);
+
+    @POST("robot/getDeduct.do")
+    Observable<GetDeductRsp> getDeduct2(@Body GetDeductReq req);
 
     // post 表单方式
     //    @POST

@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.zq.rxjavademo.bean.Request;
 import com.zq.rxjavademo.bean.Root;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -100,7 +103,27 @@ public class SchedulerTestActivity extends AppCompatActivity {
 
         mapDemo(); // 转换
 
+        flatMapDemo();
+
         getUser(); // flatmap
+    }
+
+    private void flatMapDemo() {
+
+        Observable.just("java", "c", "python", "kotlin", "c#")
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(String s) throws Exception {
+                        Log.e(TAG, "translate: " + s);
+                        return Observable.just("translate:  " + s);
+                    }
+                })
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.e(TAG, "translate accept: " + s);
+                    }
+                });
     }
 
     private void getUser() {
@@ -145,17 +168,18 @@ public class SchedulerTestActivity extends AppCompatActivity {
 
 
     void mapDemo() {
-        Observable.just(123)
+        Observable.just(123, 456, 789)
                 .map(new Function<Integer, String>() {
                     @Override
                     public String apply(Integer integer) throws Exception {
+                        Log.e(TAG, "##accept: " + integer);
                         return "rxjava: " + integer;
                     }
                 })
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        Log.e(TAG, "accept: " + s);
+                        Log.e(TAG, "##accept: " + s);
                     }
                 });
     }
