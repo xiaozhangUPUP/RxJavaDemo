@@ -1,1 +1,1 @@
-include ':app', ':dagger2demo', ':retrofitdemo'
+include ':app', ':dagger2demo', ':retrofitdemo', ':databindingdemo'
